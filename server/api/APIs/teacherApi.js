@@ -1,19 +1,17 @@
 const express = require("express");
-const teacherApi = express.Router();
-import {createUser,loginUser} from './Util'
+const teacherApp = express.Router();
 
-teacherApi.use((req,res,next)=>{
-    const teachersCollection = app.get('teachersCollection')
-    const studentsCollection = app.get('studentsCollection')
-    const testsCollection = app.get('testsCollection')
-    const resultsCollection = app.get('resultsCollection')
+
+teacherApp.use((req,res,next)=>{
+    teachersCollection = req.app.get('teachersCollection')
+    studentsCollection = req.app.get('studentsCollection')
+    testsCollection = req.app.get('testsCollection')
+    resultsCollection = req.app.get('resultsCollection')
     next()
 })
 
-teacherApi.post("/login",loginUser)
-teacherApi.post("/register",createUser)
 
-teacherApi.get("/:username",async (req,res)=>{
+teacherApp.get("/:username",async (req,res)=>{
     const username = req.params.username;
     let user = await teachersCollection.findOne({username:username})
     res.send({
@@ -21,3 +19,5 @@ teacherApi.get("/:username",async (req,res)=>{
         payload : user
     })
 })
+
+module.exports = teacherApp;

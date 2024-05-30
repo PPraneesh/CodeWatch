@@ -2,7 +2,9 @@ import React from 'react'
 
 const Login: React.FC = () => {
   return (
-    <div>Login</div>
+    <div>
+      <h1>Login</h1>
+    </div>
   )
 }
 

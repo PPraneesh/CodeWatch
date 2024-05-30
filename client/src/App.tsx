@@ -9,6 +9,7 @@ import Test from './pages/Test';
 import TestResult from './pages/TestResult';
 import PrevTests from './pages/PrevTests';
 
+
 interface User {
   username: string
   role: string
@@ -16,10 +17,9 @@ interface User {
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User>(
-    JSON.parse(localStorage.getItem('user') || '{}')
+    JSON.parse(localStorage.getItem('user'))
   )
 
-  
 
   return (
     <div>
@@ -27,13 +27,13 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/teacher/:username" element={<TeacherDash />} />
-          <Route path="/teacher/create-test" element={<CreateTest />} />
-          <Route path="/teacher/prev-tests" element={<PrevTests />} />
-          <Route path="/teacher/test/:id" element={<Test />} />  
+          <Route path="/teacher/:username/create-test" element={<CreateTest />} />
+          <Route path="/teacher/:username/prev-tests" element={<PrevTests />} />
+          <Route path="/teacher/:username/test/:id" element={<Test />} />  
 
           <Route path="/student/:username" element={<StudentDash />} />
-          <Route path="/student/test/:id" element={<Test />} />
-          <Route path="/student/test-result/:id" element={<TestResult />} />
+          <Route path="/student/:username/test/:id" element={<Test />} />
+          <Route path="/student/:username/test-result/:id" element={<TestResult />} />
         </Routes>
       </Router>
     </div>

@@ -1,2 +1,10 @@
 ###
-POST 
+POST https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "username": "22071A67A3@vnr.in",
+  "password": "password",
+  "usertype": "student"
+}

@@ -1,17 +1,15 @@
 const express = require("express");
 const studentApp = express.Router();
-import {createUser,loginUser} from './Util'
 
 studentApp.use((req,res,next)=>{
-    const teachersCollection = app.get('teachersCollection')
-    const studentsCollection = app.get('studentsCollection')
-    const testsCollection = app.get('testsCollection')
-    const resultsCollection = app.get('resultsCollection')
+    teachersCollection = req.app.get('teachersCollection')
+    studentsCollection = req.app.get('studentsCollection')
+    testsCollection = req.app.get('testsCollection')
+    resultsCollection = req.app.get('resultsCollection')
     next()
 })
 
-studentApp.post("/login",loginUser)
-studentApp.post("/register",createUser)
+
 
 studentApp.get("/:username",async (req,res)=>{
     const username = req.params.username;
@@ -22,3 +20,12 @@ studentApp.get("/:username",async (req,res)=>{
     })
 })
 
+// studentApp.get('/:username/test/:id',async (req,res)=>{
+//     const username = req.params.username;
+//     const testId = req.params.id;
+//     let test = await testsCollection.findOne({testId:testId})
+    
+    
+// })
+
+module.exports = studentApp;
