@@ -58,7 +58,7 @@ const loginUser = async(req,res)=>{
             token
         })
     }
-    else{
+    else if(userCred.userType=== 'student'){
         let dbuser = await studentsCollection.findOne({username:userCred.username})
         if(!dbuser){
             return res.send({
