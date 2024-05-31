@@ -2,7 +2,9 @@ import React from 'react'
 
 const TeacherDash: React.FC = () => {
   return (
-    <div>TeacherDash</div>
+    <div>TeacherDash
+    </div>
+    
   )
 }
 

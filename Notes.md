@@ -1,4 +1,4 @@
-## login and register 
+login and register 
 {
     "name"
     "email" //unique
