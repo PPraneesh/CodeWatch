@@ -8,7 +8,7 @@ login and register
 
 db
 
-/lo
+/login
 /register
 
 

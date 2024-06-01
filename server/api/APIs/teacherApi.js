@@ -13,9 +13,15 @@ teacherApp.use((req,res,next)=>{
 
 teacherApp.get("/:username",async (req,res)=>{
     const username = req.params.username;
-    let user = await teachersCollection.findOne({username:username})
+    console.log(username)
+    const user = await teachersCollection.findOne({email : username})
+    if(!user){
+        return res.send({
+            message:"Teacher not found"
+        })
+    }
     res.send({
-        message:"All details of students",
+        message:"Teacher found",
         payload : user
     })
 })

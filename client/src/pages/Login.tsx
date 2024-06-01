@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
+import Toast from '../components/Toast';
 
 interface FormData {
   name?: string;
@@ -21,6 +22,24 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate()
 
+  // useEffect(()=>{
+  //   const token = localStorage.getItem('token')
+  //   //validate token
+  //   //use axios with token and use verify token middleware in server
+
+  //   if(token){
+  //     const payload = localStorage.getItem('payload')
+  //     console.log(payload)
+  //     if(payload){
+  //       const userType = JSON.parse(payload).userType
+  //       const email = JSON.parse(payload).email
+  //       const username = email.split('@')[0]
+  //       navigate(`/${userType}/${username}`)
+  //     }
+  //   }
+  // }, [])
+
+
   const handleFormSubmit: SubmitHandler<FormData> = async (data) => {
     const url = `http://localhost:3001/${login ? "login" : "register"}`;
 
@@ -28,21 +47,32 @@ const Login: React.FC = () => {
       const res = await axios.post(url, { ...data, userType });
       console.log(res.data);
       if (res.data.message === "User exists") {
-        alert('User already exists');
+        Toast.Error('User exists');
       }
       else if (res.data.message === "User created") {
-        alert('User created');
-        navigate('/student/:id');
+        Toast.Success('Account created');
+        navigate('/login')
       }
       else if(res.data.message === "User not found"){
-        alert('User not found');
+        Toast.Error('User not found');
       }
       else if(res.data.message === "Password is incorrect"){
-        alert('Incorrect password');
+        Toast.Error('Password is incorrect');
       }
       else if (res.data.message === "Login successfull"){
-        alert('Login successfull');
-        navigate('/student/:id');
+        Toast.Success('Login successfull');
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('payload', JSON.stringify(res.data.payload))
+        const email = res.data.payload.email
+        const userType = res.data.payload.userType
+        //split email to 2 parts
+        const username = email.split('@')[0]
+        if(userType === 'student'){
+          navigate(`/student/${username}`)
+        }
+        else if(userType === 'teacher'){
+          navigate(`/teacher/${username}`)
+        }
       }
     } 
     
@@ -52,7 +82,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className='w-full h-full flex flex-row '>
+    <div className='w-full min-h-screen flex flex-row '>
       <div className='w-1/2 bg-blue-900'>
         <h1 className='text-7xl text-white m-auto '>Code Watch</h1>
       </div>
@@ -110,7 +140,7 @@ const Login: React.FC = () => {
             </div>
           </div>
 
-          <button type='submit' className='px-4 py-2 mt-4 bg-blue-600 text-white rounded'>
+          <button type='submit' className='px-4 py-2 mt-4 bg-blue-600 text-white rounded active:bg-white active:text-black'>
             {login ? "Login" : "Register"}
           </button>
         </form>

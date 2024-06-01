@@ -13,9 +13,11 @@ studentApp.use((req,res,next)=>{
 
 studentApp.get("/:username",async (req,res)=>{
     const username = req.params.username;
-    let user = await studentsCollection.findOne({username:username})
-    res.send({
-        message:"All details of students",
+    let user = await studentsCollection.findOne({email : username + "@gmail.com"})
+    if(!user)
+        return res.send({message:"User not found"})
+    return res.send({
+        message:"All details of student",
         payload : user
     })
 })

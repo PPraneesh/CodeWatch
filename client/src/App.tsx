@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, useNavigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Landing from './pages/Landing';
@@ -10,67 +10,77 @@ import Test from './pages/Test';
 import TestResult from './pages/TestResult';
 import PrevTests from './pages/PrevTests';
 import Layout from './Layout';
-
-const RedirectToLogin: React.FC = () => {
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    navigate('/login');
-  }, [navigate]);
-  return null;
-};
+import { Toaster } from 'react-hot-toast';
 
 const App: React.FC = () => {
-  let router = createBrowserRouter([
+  const router = createBrowserRouter([
     {
       path: '/',
+      element: <Landing />
+    },
+    {
+      path: '/login',
+      element: <Login />
+    },
+    {
+      path: '/teacher/:username',
       element: <Layout />,
       children: [
         {
-          path: '/',
-          element: <Landing />
-        },
-        {
-          path: '/login',
-          element: <Login />
-        },
-        {
-          path: '/teacher/:username',
+          path: '',
           element: <TeacherDash />
         },
         {
-          path: '/teacher/:username/create-test',
+          path: 'create-test',
           element: <CreateTest />
         },
         {
-          path: '/teacher/:username/test/:testId',
+          path: 'test/:testId',
           element: <Test />
         },
         {
-          path: '/teacher/:username/prev-tests',
+          path: 'prev-tests',
           element: <PrevTests />
-        },
+        }
+      ]
+    },
+    {
+      path: '/student/:username',
+      element: <Layout />,
+      children: [
         {
-          path: '/student/:username',
+          path: '',
           element: <StudentDash />
         },
         {
-          path: '/student/:username/test/:testId',
+          path: 'test/:testId',
           element: <Test />
         },
         {
-          path: '/student/:username/test-result/:testId',
+          path: 'test',
+          element: <Test />
+        },
+        {
+          path: 'test-result/:testId',
           element: <TestResult />
         },
         {
-          path: '*',
-          element: <RedirectToLogin /> 
+          path: 'test-result',
+          element: <TestResult />
         }
       ]
+    },
+    {
+      path: '*',
+      element: <Login />
     }
   ]);
 
   return (
-    <RouterProvider router={router} />
+    <>
+      <Toaster />
+      <RouterProvider router={router} />
+    </>
   );
 };
 

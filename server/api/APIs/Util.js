@@ -15,8 +15,9 @@ const createUser = async (req, res) => {
                 message: "User exists"
             })
         }
-        user.password = bcrypt.hash(user.password, process.env.SALT)
+        user.password = await bcrypt.hash(user.password, 8)
         user = { ...user, testsCreated: [] }
+        console.log(user)
         await teachersCollection.insertOne(user)
         return res.send({
             message: "User created",
@@ -48,18 +49,20 @@ const loginUser = async (req, res) => {
     const studentsCollection = req.app.get('studentsCollection')
     if (userCred.userType === 'teacher') {
         let dbuser = await teachersCollection.findOne({ email: userCred.email })
+        console.log(dbuser)
         if (!dbuser) {
             return res.send({
                 message: "User not found"
             })
         }
         let passwordStatus = await bcrypt.compare(userCred.password, dbuser.password)
+        console.log(passwordStatus)
         if (!passwordStatus) {
             return res.send({
                 message: "Password is incorrect"
             })
         }
-        let token = jwt.sign({ username: userCred.username }, "secret", { expiresIn: '1d' });
+        let token = jwt.sign({ email: userCred.email }, "secret", { expiresIn: '1d' });
         delete dbuser.password;
         res.send({
             message: "Login successfull",
@@ -80,7 +83,7 @@ const loginUser = async (req, res) => {
                 message: "Password is incorrect"
             })
         }
-        let token = jwt.sign({ username: userCred.username }, "secret", { expiresIn: '1d' });
+        let token = jwt.sign({ email: userCred.email }, "secret", { expiresIn: '1d' });
         delete dbuser.password;
         res.send({
             message: "Login successfull",
