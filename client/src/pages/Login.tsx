@@ -45,37 +45,34 @@ const Login: React.FC = () => {
 
     try {
       const res = await axios.post(url, { ...data, userType });
-      console.log(res.data);
       if (res.data.message === "User exists") {
         Toast.Error('User exists');
       }
-      else if (res.data.message === "User created") {
-        Toast.Success('Account created');
-        navigate('/login')
-      }
-      else if(res.data.message === "User not found"){
+      else if (res.data.message === "User not found") {
         Toast.Error('User not found');
       }
-      else if(res.data.message === "Password is incorrect"){
+      else if (res.data.message === "Password is incorrect") {
         Toast.Error('Password is incorrect');
       }
-      else if (res.data.message === "Login successfull"){
-        Toast.Success('Login successfull');
+      else if (res.data.message === "Login successfull" || res.data.message === "User created and logged in") {
+        if (res.data.message === "Login successfull")
+          Toast.Success('Login successfull');
+        else Toast.Success('Account Created')
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('payload', JSON.stringify(res.data.payload))
         const email = res.data.payload.email
         const userType = res.data.payload.userType
         //split email to 2 parts
         const username = email.split('@')[0]
-        if(userType === 'student'){
+        if (userType === 'student') {
           navigate(`/student/${username}`)
         }
-        else if(userType === 'teacher'){
+        else if (userType === 'teacher') {
           navigate(`/teacher/${username}`)
         }
       }
-    } 
-    
+    }
+
     catch (err) {
       console.log(err);
     }

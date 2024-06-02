@@ -6,7 +6,6 @@ require('dotenv').config();
 const createUser = async (req, res) => {
 
     let user = req.body;
-    console.log(user)
     if (user.userType === 'teacher') {
         const teachersCollection = req.app.get('teachersCollection')
         let dbuser = await teachersCollection.findOne({ email: user.email })
@@ -17,12 +16,15 @@ const createUser = async (req, res) => {
         }
         user.password = await bcrypt.hash(user.password, 8)
         user = { ...user, testsCreated: [] }
-        console.log(user)
         await teachersCollection.insertOne(user)
+        let token = jwt.sign({ email: user.email }, "secret", { expiresIn: '1d' });
+        delete user.password;
         return res.send({
-            message: "User created",
-            payload: user
+            message: "User created and logged in",
+            payload: user,
+            token
         })
+        
     }
     else if (user.userType === 'student') {
         const studentsCollection = req.app.get('studentsCollection')
@@ -34,11 +36,13 @@ const createUser = async (req, res) => {
         
         user.password = await bcrypt.hash(user.password, 8)
         user = { ...user, testsTaken: [] }
-        console.log(user)
         await studentsCollection.insertOne(user)
+        let token = jwt.sign({ email: user.email }, "secret", { expiresIn: '1d' });
+        delete user.password;
         return res.send({
-            message: "User created",
-            payload: user
+            message: "User created and logged in",
+            payload: user,
+            token
         })
     }
 }
@@ -49,14 +53,12 @@ const loginUser = async (req, res) => {
     const studentsCollection = req.app.get('studentsCollection')
     if (userCred.userType === 'teacher') {
         let dbuser = await teachersCollection.findOne({ email: userCred.email })
-        console.log(dbuser)
         if (!dbuser) {
             return res.send({
                 message: "User not found"
             })
         }
         let passwordStatus = await bcrypt.compare(userCred.password, dbuser.password)
-        console.log(passwordStatus)
         if (!passwordStatus) {
             return res.send({
                 message: "Password is incorrect"
