@@ -2,7 +2,9 @@ import React from 'react'
 
 const QuestionInput: React.FC = () => {
   return (
-    <div>QuestionInput</div>
+    <div className='w-1/2 m-auto bg-blue-500'>
+        add question
+    </div>
   )
 }
 

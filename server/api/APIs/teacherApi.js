@@ -13,8 +13,8 @@ teacherApp.use((req, res, next) => {
 
 teacherApp.get("/:username", async (req, res) => {
     const username = req.params.username;
-    console.log(username)
     const user = await teachersCollection.findOne({ email: username })
+    console.log(user)
     if (!user) {
         return res.send({
             message: "Teacher not found"
@@ -26,11 +26,11 @@ teacherApp.get("/:username", async (req, res) => {
     })
 })
 
-function testCodeGen(){
+function testCodeGen() {
     let code = ""
     const alpha = "abcdefghijklmnopqrstuvwxyz"
 
-    for(let i = 0; i < 5; i++){
+    for (let i = 0; i < 5; i++) {
         code += alpha[Math.floor(Math.random() * alpha.length)]
     }
     return code
@@ -38,26 +38,56 @@ function testCodeGen(){
 
 teacherApp.post("/:username/create-test", async (req, res) => {
     const username = req.params.username;
-    const testData = req.body
-    const testCode = testCodeGen()
+    const testData = req.body;
+    const testCode = testCodeGen();
     const test = {
-        ...testData,
         testId: testCode,
-        teacher: username
-    }
+        teacher: username,
+        ...testData,
+    };
 
-    console.log(test)
-    const result = await testsCollection.insertOne(test)
-    if (result.insertedCount > 0) {
+    console.log("Test Data to be inserted:", test);
+
+    try {
+        const result = await testsCollection.insertOne(test);
+
+        if (result.acknowledged) {
+            await teachersCollection.updateOne({email: username + "@gmail.com"}, {$push: {testsCreated: testCode}});
+            return res.send({
+                message: "Test created",
+                payload: test
+            });
+        } else {
+            console.log("Test insert failed:", result);
+            return res.send({
+                message: "Test not created"
+            });
+        }
+    } catch (err) {
+        console.error("Error inserting test:", err);
         return res.send({
-            message: "Test created",
-            payload: test
-        })
+            message: "Test not created"
+        });
     }
-    res.send({
-        message: "Test not created"
-    })
+});
 
-})
+teacherApp.get('/:username/create-test/:testId/add-questions', async (req, res) => {
+    const username = req.params.username;
+    const testId = req.params.testId;
+    const test = await testsCollection.findOne({ testId: testId });
+
+    if (test) {
+        return res.send({
+            message: "Test found",
+            payload: test
+        });
+    }
+
+    return res.send({
+        message: "Test not found"
+    });
+
+});
+
 
 module.exports = teacherApp;

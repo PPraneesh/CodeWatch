@@ -6,6 +6,7 @@ import Landing from './pages/Landing';
 import TeacherDash from './pages/TeacherDash';
 import StudentDash from './pages/StudentDash';
 import CreateTest from './pages/CreateTest';
+import AddQuestions from './pages/AddQuestions';
 import Test from './pages/Test';
 import TestResult from './pages/TestResult';
 import PrevTests from './pages/PrevTests';
@@ -33,6 +34,10 @@ const App: React.FC = () => {
         {
           path: 'create-test',
           element: <CreateTest />
+        },
+        {
+          path: 'create-test/:testId/add-questions',
+          element: <AddQuestions />
         },
         {
           path: 'test/:testId',

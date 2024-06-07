@@ -1,30 +1,38 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Toast from '../components/Toast';
+import { useForm } from 'react-hook-form';
+
 
 const CreateTest: React.FC = () => {
-  const [testName, setTestName] = useState('');
-  const [examTime, setExamTime] = useState('');
-  const [duration, setDuration] = useState('');
-  const [language, setLanguage] = useState('any');
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const payload = JSON.parse(localStorage.getItem('payload') || '{}');
   const username = payload.email?.split('@')[0];
 
-  const handleSubmit = async () => {
+  const handleCreateTest = async (data: any) => {
+    const { testName, examTime, duration, language, numCodingQues, numMcqs } = data;
     const testDetails = {
       testName,
       examTime,
       duration,
       language,
+      numCodingQues,
+      numMcqs,
+      codingQuestions: [],
+      mcqs: [],
+      status: false //private
     };
 
+    // console.log(testDetails);
     await axios.post(`http://localhost:3001/teacher/${username}/create-test`, testDetails)
       .then((res) => {
         console.log(res.data)
         if(res.data.message === 'Test created'){
+          Toast.Success("Test created successfully")
           console.log(res.data.payload)
+          navigate(`/teacher/${username}/create-test/${res.data.payload.testId}/add-questions`)
         }
         else if(res.data.message === 'Test not created'){
           Toast.Error("Error creating test")
@@ -35,18 +43,17 @@ const CreateTest: React.FC = () => {
         Toast.Error('Error creating test, please login again')
       });
   };
-  //num of coding ques and num of mcqs
 
   return (
-    <div className='h-full w-full p-8'>
+    <form onSubmit={handleSubmit(handleCreateTest)} className='h-full w-full p-8'>
+      <h1 className='text-4xl '>Create Test</h1>
       <div>
         <h1>Test name</h1>
         <input
           type="text"
           placeholder='Enter Test Name'
-          value={testName}
-          onChange={(e) => setTestName(e.target.value)}
           required
+          {...register('testName')}
         />
       </div>
 
@@ -54,28 +61,25 @@ const CreateTest: React.FC = () => {
         <h1>Time of Examination</h1>
         <input
           type="time"
-          value={examTime}
-          onChange={(e) => setExamTime(e.target.value)}
           required
+          {...register('examTime')}
         />
       </div>
 
       <div>
         <h1>Duration of Test in minutes</h1>
         <input
-          type="number"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
+          type="number"        
           required
+          {...register('duration')}
         />
       </div>
 
       <div>
         <h1>Specific language</h1>
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
+        <select        
           required
+          {...register('language')}
         >
           <option value="any">Any</option>
           <option value="C++">C++</option>
@@ -84,10 +88,28 @@ const CreateTest: React.FC = () => {
         </select>
       </div>
 
-      <button onClick={handleSubmit} className='mt-4 bg-black px-6 py-2 rounded-lg text-white'>
+      <div>
+        <h1>Number of coding questions</h1>
+        <input
+          type="number"
+          required
+          {...register('numCodingQues')}
+        />
+      </div>
+
+      <div>
+        <h1>Number of mcqs</h1>
+        <input
+          type="number"
+          required
+          {...register('numMcqs')}
+        />
+      </div>
+
+      <button type='submit' className='mt-4 bg-black px-6 py-2 rounded-lg text-white'>
         Create Test
       </button>
-    </div>
+    </form>
   );
 };
 
