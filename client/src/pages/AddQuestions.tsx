@@ -3,6 +3,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import Toast from '../components/Toast'
 import QuestionInput from '../components/QuestionInput'
+import { set } from 'react-hook-form'
 
 const AddQuestions: React.FC = () => {
   const { username } = useParams<{ username: string }>()
@@ -10,14 +11,15 @@ const AddQuestions: React.FC = () => {
   const teacher = JSON.parse(localStorage.getItem('payload') || '{}')
   const [codingQuestions, setCodingQuestions] = React.useState<any>([])
   const [mcqs, setMcqs] = React.useState<any>([])
-  const [questionPane, setQuestionPane] = React.useState<boolean>(false)
+  const [codingPane, setCodingPane] = React.useState<boolean>(false)
+  const [mcqPane, setMcqPane] = React.useState<boolean>(false)
 
   const [test, setTest] = React.useState<any>({})
 
   React.useEffect(() => {
     axios.get(`http://localhost:3001/teacher/${username}/create-test/${testId}/add-questions`)
       .then((res) => {
-        if (res.data.message === "Test found"){
+        if (res.data.message === "Test found") {
           setTest(res.data.payload)
           setCodingQuestions(res.data.payload.codingQuestions)
           setMcqs(res.data.payload.mcqs)
@@ -35,16 +37,52 @@ const AddQuestions: React.FC = () => {
 
 
   const handleAddCoding = () => {
-    setQuestionPane(!questionPane)
+    setMcqPane(false)
+    setCodingPane(!codingPane)
     // setCodingQuestions([...codingQuestions, {
     //   question: '',
     //   testCases: '',
+    //   input: '',
+    //   output: '',
     //   constraints: '',
     //   difficulty: ''
     // }])
   }
 
+  const handleAddMcq = () => {
+    setCodingPane(false)
+    setMcqPane(!mcqPane)
+    // setMcqs([...mcqs, {
+    //   question: '',
+    //   options: [4],
+    //   correctOption: '',
+    //   difficulty: ''
+    // }])
+  }
 
+  const handleCreateTest = async () => {
+    const questions = {
+      codingQuestions,
+      mcqs
+    }
+
+    await axios.post(`http://localhost:3001/teacher/${username}/create-test/${testId}/add-questions`, {questions})
+      .then((res) => {
+        if (res.data.message === 'Questions added') {
+          Toast.Success("Questions added successfully")
+        }
+        else if (res.data.message === 'Questions not added') {
+          Toast.Error("Error adding questions")
+        }
+        else{
+          Toast.Error("Some error occured, Try again later")
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        Toast.Error('Error adding questions, please login again')
+      });
+  }
 
   return (
     <div className='p-4'>
@@ -64,9 +102,11 @@ const AddQuestions: React.FC = () => {
           return (
             <div key={index}>
               <h1>{question.question}</h1>
+              <h1>{question.difficulty}</h1>
               <h1>{question.testCases}</h1>
               <h1>{question.constraints}</h1>
-              <h1>{question.difficulty}</h1>
+              <h1>{question.input}</h1>
+              <h1>{question.output}</h1>
             </div>
           )
         })}
@@ -79,18 +119,21 @@ const AddQuestions: React.FC = () => {
           return (
             <div key={index}>
               <h1>{question.question}</h1>
+              <h1>{question.difficulty}</h1>
               <h1>{question.options}</h1>
               <h1>{question.correctOption}</h1>
-              <h1>{question.difficulty}</h1>
             </div>
           )
         })}
-
+        <button onClick={handleAddMcq}>Add Question</button>
       </div>
 
       {
-        questionPane && <QuestionInput />
+        (codingPane || mcqPane) && <QuestionInput qtype={codingPane} setCodingQuestions={setCodingQuestions} setMcqs={setMcqs} 
+        setCodingPane={setCodingPane} setMcqPane={setMcqPane}/>
       }
+
+      <button onClick={handleCreateTest}>Create Test</button>
 
     </div>
   )
