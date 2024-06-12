@@ -40,11 +40,11 @@ const App: React.FC = () => {
           element: <AddQuestions />
         },
         {
-          path: 'test/:testId',
+          path: 'test/:testId', //tests/testId
           element: <Test />
         },
         {
-          path: 'prev-tests',
+          path: 'prev-tests',  //tests
           element: <PrevTests />
         }
       ]
@@ -67,10 +67,6 @@ const App: React.FC = () => {
         },
         {
           path: 'test-result/:testId',
-          element: <TestResult />
-        },
-        {
-          path: 'test-result',
           element: <TestResult />
         }
       ]

@@ -23,13 +23,32 @@ teacher
 }
 
 students
-{
+{   
     name
     email
     hashedpass
     testsInfo : [
         {
-            testId
-        }
+            testId,
+            marks:
+            status: copied notcopied
+        }... 
     ]
-}
+} ...
+
+
+teacher
+results {
+    testId: 
+    status
+    result
+    [
+        {
+            studentId
+            studentMarks
+
+        } ...
+    ] 
+     
+} ...
+

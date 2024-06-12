@@ -45,6 +45,12 @@ const createUser = async (req, res) => {
             token
         })
     }
+    else{
+        return res.send({
+            message: "what are you trying to do?",
+            payload: user
+        })
+    }
 }
 
 const loginUser = async (req, res) => {

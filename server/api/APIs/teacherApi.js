@@ -13,7 +13,7 @@ teacherApp.use((req, res, next) => {
 })
 
 
-teacherApp.get("/:username", async (req, res) => {
+teacherApp.get("/:username", async (req, res) => { //dashboard
     const username = req.params.username;
     const user = await teachersCollection.findOne({ email: username })
     console.log(user)
@@ -47,6 +47,8 @@ teacherApp.post("/:username/create-test", async (req, res) => {
         teacher: username,
         ...testData,
     };
+
+    // test 
 
     console.log("Test Data to be inserted:", test);
 
@@ -127,15 +129,69 @@ teacherApp.post('/:username/create-test/:testId/add-questions', async (req, res)
             await mcqQuestionsCollection.insertOne(question);
             await testsCollection.updateOne({ testId: testId }, { $push: { mcqQuestions: question.questionId } });
         }
-        res.send({ message: "Questions added" })
-    }
+        res.send({ message: "Questions added" }) 
+     }
     catch (err) {
         console.log(err)
         return res.send({ message: "Questions not added" })
     }
-
-
-
 });
+
+//tests
+
+teacherApp.get("/tests", async (req,res)=>{
+    const tests = await testCollection.find();
+    
+    if(!tests){
+        return res.send({
+            message: "No tests found"
+        })
+    }
+    res.send({
+        message: "Tests found",
+        payload: tests
+    })
+})
+
+
+//tests/:testId -- prev, ongoing, upcoming tests
+teacherApp.get("/tests/:testId",async (req,res)=>{
+    const testId = req.params.testId;
+    const test = await testsCollection.findOne({ testId: testId });
+    if (!test) {
+        return res.send({
+            message: "Test not found"
+        });
+    }
+    if(test.status === "completed"){
+        const result = await resultsCollection.find({ testId: testId });
+        return res.send({
+            message: "Test has ended",
+            payload: result
+        });
+    }
+    else if(test.status === "ongoing"){
+        const result = await resultsCollection.find({ testId: testId });
+        return res.send({
+            message: "Test is going on",
+            payload: result
+        });
+    }
+    else if(test.status === "upcoming"){
+        
+        return res.send({
+            message: "Test is upcoming",
+            payload: test
+        });
+    }
+    else{
+        return res.send({
+            message: "Test not found"
+        });
+    }
+})
+//create a results collection to store the results of the tests
+//results collection will have testId, studentId, marks, time taken, status
+
 
 module.exports = teacherApp;
