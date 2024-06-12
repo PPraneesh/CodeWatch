@@ -15,14 +15,15 @@ teacherApp.use((req, res, next) => {
 
 teacherApp.get("/:username", async (req, res) => { //dashboard
     const username = req.params.username;
-    const user = await teachersCollection.findOne({ email: username })
+    const user = await teachersCollection.findOne({ email: `${username}@gmail.com` })
     console.log(user)
     if (!user) {
         return res.send({
             message: "Teacher not found"
         })
     }
-    res.send({
+    delete user.password
+    return res.send({
         message: "Teacher found",
         payload: user
     })
@@ -44,13 +45,10 @@ teacherApp.post("/:username/create-test", async (req, res) => {
     const testCode = GenCode();
     const test = {
         testId: testCode,
-        teacher: username,
+        email : `${username}@gmail.com`,
         ...testData,
     };
 
-    // test 
-
-    console.log("Test Data to be inserted:", test);
 
     try {
         const result = await testsCollection.insertOne(test);
@@ -139,39 +137,46 @@ teacherApp.post('/:username/create-test/:testId/add-questions', async (req, res)
 
 //tests
 
-teacherApp.get("/tests", async (req,res)=>{
-    const tests = await testCollection.find();
-    
-    if(!tests){
-        return res.send({
-            message: "No tests found"
+teacherApp.get("/:username/tests", async (req,res)=>{
+    const username = req.params.username;
+    await teachersCollection.findOne({email:username+"@gmail.com"}) 
+    .then((teacher)=>{
+        if(!teacher){
+            return res.send({
+                message: "No tests found"
+            })
+        }
+        res.send({
+            message: "Tests found",
+            payload: teacher.testsCreated
         })
-    }
-    res.send({
-        message: "Tests found",
-        payload: tests
     })
+    .catch((err)=>{
+        console.log(err)
+    })
+   
 })
 
 
 //tests/:testId -- prev, ongoing, upcoming tests
-teacherApp.get("/tests/:testId",async (req,res)=>{
-    const testId = req.params.testId;
-    const test = await testsCollection.findOne({ testId: testId });
+teacherApp.get("/:username/tests/:testId",async (req,res)=>{
+    const {username,testId} = req.params;
+    const test = await testsCollection.findOne({ username:`${username}@gmail.com`,testId: testId });
+    console.log(test)
     if (!test) {
         return res.send({
             message: "Test not found"
         });
     }
     if(test.status === "completed"){
-        const result = await resultsCollection.find({ testId: testId });
+        const result = await resultsCollection.findOne({ testId: testId });
         return res.send({
             message: "Test has ended",
             payload: result
         });
     }
     else if(test.status === "ongoing"){
-        const result = await resultsCollection.find({ testId: testId });
+        const result = await resultsCollection.findOne({ testId: testId });
         return res.send({
             message: "Test is going on",
             payload: result
@@ -190,8 +195,6 @@ teacherApp.get("/tests/:testId",async (req,res)=>{
         });
     }
 })
-//create a results collection to store the results of the tests
-//results collection will have testId, studentId, marks, time taken, status
 
 
 module.exports = teacherApp;

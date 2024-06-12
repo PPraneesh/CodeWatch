@@ -7,9 +7,10 @@ import TeacherDash from './pages/TeacherDash';
 import StudentDash from './pages/StudentDash';
 import CreateTest from './pages/CreateTest';
 import AddQuestions from './pages/AddQuestions';
+import TestCodeInput from './pages/TestCodeInput';
 import Test from './pages/Test';
 import TestResult from './pages/TestResult';
-import PrevTests from './pages/PrevTests';
+import AllTests from './pages/AllTests';
 import Layout from './Layout';
 import { Toaster } from 'react-hot-toast';
 
@@ -40,13 +41,13 @@ const App: React.FC = () => {
           element: <AddQuestions />
         },
         {
-          path: 'test/:testId', //tests/testId
-          element: <Test />
+          path: 'tests',  //tests
+          element: <AllTests />
         },
         {
-          path: 'prev-tests',  //tests
-          element: <PrevTests />
-        }
+          path: 'tests/:testId', //tests/testId
+          element: <Test />
+        },
       ]
     },
     {
@@ -58,11 +59,11 @@ const App: React.FC = () => {
           element: <StudentDash />
         },
         {
-          path: 'test/:testId',
-          element: <Test />
+          path: 'test',
+          element: <TestCodeInput />
         },
         {
-          path: 'test',
+          path: 'test/:testId',
           element: <Test />
         },
         {

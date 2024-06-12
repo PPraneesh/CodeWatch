@@ -9,7 +9,7 @@ const TeacherDash: React.FC = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/teacher/${username + "@gmail.com"}`)
+    axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/teacher/${username + "@gmail.com"}`)
       .then(res => {
         if (res.data.message === "Teacher not found")
           return
@@ -27,7 +27,7 @@ const TeacherDash: React.FC = () => {
         <h1 className='font-sans text-xl'>Actions</h1>
         <div className='mt-4 flex flex-row justify-evenly items-center gap-4'>
           <button onClick={()=>navigate(`/teacher/${username}/create-test`)} className='flex-1 py-2 rounded-lg border border-white bg-black text-white hover:bg-white hover:border-black hover:text-black'>Create Test</button>
-          <button onClick={()=>navigate(`/teacher/${username}/prev-tests`)} className='flex-1 py-2 rounded-lg border border-white bg-black text-white hover:bg-white hover:border-black hover:text-black'>Past Tests</button>
+          <button onClick={()=>navigate(`/teacher/${username}/tests`)} className='flex-1 py-2 rounded-lg border border-white bg-black text-white hover:bg-white hover:border-black hover:text-black'>Past Tests</button>
           <button className='flex-1 py-2 rounded-lg border border-white bg-black text-white hover:bg-white hover:border-black hover:text-black'>Test Stats</button>
         </div>
       </div>

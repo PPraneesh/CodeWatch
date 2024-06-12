@@ -17,7 +17,7 @@ const AddQuestions: React.FC = () => {
   const [test, setTest] = React.useState<any>({})
 
   React.useEffect(() => {
-    axios.get(`http://localhost:3001/teacher/${username}/create-test/${testId}/add-questions`)
+    axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/teacher/${username}/create-test/${testId}/add-questions`)
       .then((res) => {
         if (res.data.message === "Test found") {
           setTest(res.data.payload)
@@ -66,7 +66,7 @@ const AddQuestions: React.FC = () => {
       mcqs
     }
 
-    await axios.post(`http://localhost:3001/teacher/${username}/create-test/${testId}/add-questions`, {questions})
+    await axios.post(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/teacher/${username}/create-test/${testId}/add-questions`, {questions})
       .then((res) => {
         if (res.data.message === 'Questions added') {
           Toast.Success("Questions added successfully")
@@ -85,16 +85,16 @@ const AddQuestions: React.FC = () => {
   }
 
   return (
-    <div className='p-4'>
-      <div>
-        <h1>Add Questions</h1>
-        <h1>{test.testName}</h1>
-        <h1>{test.duration}</h1>
-        <h1>{test.examTime}</h1>
-        <h1>{test.language}</h1>
-        <h1>{test.numCodingQues}</h1>
-        <h1>{test.numMcqs}</h1>
-        <h1>{test.teacher}</h1>
+    <div className='p-4 flex flex-col gap-4' >
+      <div className='flex flex-col gap-2'>
+        <h1 className='text-2xl'>Add Questions</h1>
+        <h1 className='text-lg'>Test Name: {test.testName}</h1>
+        <h1 className='text-lg'>Duration: {test.duration}</h1>
+        <h1 className='text-lg'>Time: {test.examTime}</h1>
+        <h1 className='text-lg'>Lnaguage: {test.language}</h1>
+        <h1 className='text-lg'>Number of Coding questions: {test.numCodingQues}</h1>
+        <h1 className='text-lg'>Number of MCQs: {test.numMcqs}</h1>
+        <h1 className='text-lg'>Teacher: {test.email?.split('@')[0]}</h1>
       </div>
       <div>
         <h1>Coding Questions</h1>
@@ -110,7 +110,7 @@ const AddQuestions: React.FC = () => {
             </div>
           )
         })}
-        <button onClick={handleAddCoding}>Add Question</button>
+        <button onClick={handleAddCoding} className='bg-blue-700 text-white px-4 py-1 '>Add Question</button>
       </div>
 
       <div>

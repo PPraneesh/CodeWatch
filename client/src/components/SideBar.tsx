@@ -51,8 +51,8 @@ const SideBar: React.FC = () => {
                             <Link to={`/teacher/${username}/create-test`}>
                                 <li className='text-lg font-bold'>Create Test</li>
                             </Link>
-                            <Link to={`/teacher/${username}/prev-tests`}>
-                                <li className='text-lg font-bold'>Previous Tests</li>
+                            <Link to={`/teacher/${username}/tests`}>
+                                <li className='text-lg font-bold'>Tests</li>
                             </Link>
                             <li onClick={handleLogout} className='text-lg font-bold cursor-pointer'>Log-Out</li>
                         </ul>

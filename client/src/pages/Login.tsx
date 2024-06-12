@@ -41,7 +41,7 @@ const Login: React.FC = () => {
 
 
   const handleFormSubmit: SubmitHandler<FormData> = async (data) => {
-    const url = `http://localhost:3001/${login ? "login" : "register"}`;
+    const url = `https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/${login ? "login" : "register"}`;
 
     try {
       const res = await axios.post(url, { ...data, userType });
@@ -80,11 +80,11 @@ const Login: React.FC = () => {
 
   return (
     <div className='w-full min-h-screen flex flex-row '>
-      <div className='w-1/2 bg-blue-900'>
+      <div className='w-7/12 bg-blue-900'>
         <h1 className='text-7xl text-white m-auto '>Code Watch</h1>
       </div>
 
-      <div className='w-1/2 px-24 mt-16 mb-auto'>
+      <div className='w-5/12 px-24 mt-16 mb-auto'>
         <h1 className='text-5xl font-semibold text-gray-700 text-center'> {login ? "Login" : "Register"} </h1>
         <p className='text-xl text-gray-600 text-center'>{login ? "Welcome Back" : "Create a New Account"}</p>
         <form onSubmit={handleSubmit(handleFormSubmit)} className='mt-8 px-14 py-10 bg-blue-200 rounded-lg flex flex-col gap-4'>

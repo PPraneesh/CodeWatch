@@ -11,7 +11,7 @@ const StudentDash: React.FC = () => {
   // const [tests, setTests] = useState<any>(null)
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/student/${username}`)
+    axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}`)
       .then(res => {
         if (res.data.message === "User not found")
           // navigate('/login')
