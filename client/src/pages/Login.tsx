@@ -80,56 +80,71 @@ const Login: React.FC = () => {
 
   return (
     <div className='w-full min-h-screen flex flex-row '>
-      <div className='w-7/12 bg-blue-900'>
-        <h1 className='text-7xl text-white m-auto '>Code Watch</h1>
+      <div className="relative w-7/12">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline 
+          className="absolute top-0 left-0 w-full h-full object-cover z-0" style={{ filter: 'grayscale(100%)'}}
+        >
+          <source src="https://hrcdn.net/fcore/assets/onboarding/globe-5fdfa9a0f4.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="relative z-10 flex justify-center items-center h-full">
+          <h1 className="text-7xl text-white">Code <span className="text-[#f8b739]">Watch</span></h1>
+        </div>
       </div>
 
-      <div className='w-5/12 px-24 mt-16 mb-auto'>
-        <h1 className='text-5xl font-semibold text-gray-700 text-center'> {login ? "Login" : "Register"} </h1>
-        <p className='text-xl text-gray-600 text-center'>{login ? "Welcome Back" : "Create a New Account"}</p>
-        <form onSubmit={handleSubmit(handleFormSubmit)} className='mt-8 px-14 py-10 bg-blue-200 rounded-lg flex flex-col gap-4'>
+
+      <div className='w-5/12 px-24 mt-8 mb-auto'>
+      <p className='text-2xl text-black text-center'>{login ? "Welcome Back!" : "Create a New Account"}</p>
+        <h1 className='text-3xl font-semibold text-black text-center'> {login ? "Login to your account" : "Register"} </h1>
+        
+        <form onSubmit={handleSubmit(handleFormSubmit)} className='mt-8 px-14 py-10 bg-black rounded-lg flex flex-col gap-4'>
           {!login && (
             <div>
-              <label className="block text-gray-700 text-lg font-semibold mb-2">Full Name</label>
+              <label className="block text-lg font-semibold mb-2 text-gray-200">Full Name</label>
               <input
                 type="text"
-                className='w-full px-3 py-2 bg-transparent text-gray-700 border-2 border-black/40 focus:border-blue-800 focus:border-2 focus:outline-none rounded-lg'
+                className='w-full px-3 py-2 bg-gray-800 text-white border-2 border-black/40 focus:border-[#f8b739] focus:border-2 focus:outline-none rounded-lg '
                 placeholder='Enter Full Name'
                 {...register('name')}
               />
             </div>
           )}
           <div>
-            <label className="block text-gray-700 text-lg font-bold mb-2">Email Address</label>
+            <label className="block text-white text-lg font-bold mb-2 text-gray-200">Email Address</label>
             <input
               type="email"
-              className='w-full px-3 py-2 bg-transparent text-gray-700 border-2 border-black/40 focus:border-blue-800 focus:border-2 focus:outline-none rounded-lg'
+              className='w-full px-3 py-2  border-2 border-black/40 focus:border-[#f8b739] focus:border-2 focus:outline-none rounded-lg bg-gray-800 text-white'
               placeholder='Enter email'
               required
               {...register('email')}
             />
           </div>
           <div>
-            <label className="block text-gray-700 text-lg font-bold mb-2">Password</label>
+            <label className="block text-white text-lg font-bold mb-2 text-gray-200 ">Password</label>
             <input
               type="password"
-              className='w-full px-3 py-2 bg-transparent text-gray-700 border-2 border-black/40 focus:border-blue-800 focus:border-2 focus:outline-none rounded-lg'
+              className='w-full px-3 py-2 text-black border-2 border-black/40 focus:border-
+               focus:border-[#f8b739] focus:outline-none rounded-lg bg-gray-800 text-white'
               placeholder='Enter password'
               required
               {...register('password')}
             />
           </div>
           <div className='w-full'>
-            <label className="block text-gray-700 text-lg font-bold mb-2">User Type</label>
+            <label className="block text-white text-lg font-bold mb-2 text-gray-200">User Type</label>
             <div className='flex flex-row gap-4'>
               <div
-                className={`w-1/2 px-4 py-2 rounded-lg text-center cursor-pointer ${userType === 'student' ? 'bg-blue-700 text-white' : 'bg-white text-black'}`}
+                className={`w-1/2 px-4 py-2 rounded-lg text-center cursor-pointer ${userType === 'student' ? 'bg-[#f8b739] ' : 'bg-gray-800 text-white'}`}
                 onClick={() => setUserType('student')}
               >
                 Student
               </div>
               <div
-                className={`w-1/2 px-4 py-2 rounded-lg text-center cursor-pointer ${userType === 'teacher' ? 'bg-blue-700 text-white' : 'bg-white text-black'}`}
+                className={`w-1/2 px-4 py-2 rounded-lg text-center cursor-pointer ${userType === 'teacher' ? 'bg-[#f8b739]' : 'bg-gray-800 text-white'}`}
                 onClick={() => setUserType('teacher')}
               >
                 Teacher
@@ -137,10 +152,12 @@ const Login: React.FC = () => {
             </div>
           </div>
 
-          <button type='submit' className='px-4 py-2 mt-4 bg-blue-600 text-white rounded active:bg-white active:text-black'>
+          <button type='submit' className='px-4 py-2 mt-4 bg-[#f8b739] rounded active:bg-white active:text-black'>
             {login ? "Login" : "Register"}
           </button>
         </form>
+        
+        <div className="m-5">
         <button onClick={() => setLogin(!login)}>
           {login ? (
             <>Don't have an account? <span className="underline">Sign up</span></>
@@ -148,6 +165,7 @@ const Login: React.FC = () => {
             <>Already have an account? <span className="underline">Sign in</span></>
           )}
         </button>
+        </div>
       </div>
     </div>
   );

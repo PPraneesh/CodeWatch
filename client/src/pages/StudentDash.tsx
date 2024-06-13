@@ -2,6 +2,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import StudentPerf from '../components/StudentPerf'
+
+
+
+//dashboard
+// /* App.js */
+//import CanvasJSReact from '@canvasjs/react-charts';
 
 const StudentDash: React.FC = () => {
   let { username } = useParams()
@@ -25,7 +32,12 @@ const StudentDash: React.FC = () => {
   console.log(userData)
   
   return (
-    <div>StudentDash</div>
+    <div>
+        <div>
+        <h1 className='text-4xl  p-8 text-black'>Your Performance</h1>
+        <StudentPerf /> {/* Render the PerformanceChart component */}
+      </div>
+    </div>
   )
 }
 

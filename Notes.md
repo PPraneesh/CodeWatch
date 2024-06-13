@@ -12,7 +12,7 @@ db
 /register
 
 
-
+zvslz
 
 teacher 
 {
@@ -46,9 +46,17 @@ results {
         {
             studentId
             studentMarks
-
         } ...
     ] 
      
 } ...
+
+
+
+
+///CODING EDITIR
+
+test.tsx and codingInterface.tsx
+
+test.tsx  -  qId
 

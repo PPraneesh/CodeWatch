@@ -1,5 +1,7 @@
 const express = require("express");
 const studentApp = express.Router();
+const btoa = require('btoa');
+const axios = require('axios');
 
 studentApp.use((req, res, next) => {
   teachersCollection = req.app.get("teachersCollection");
@@ -56,32 +58,21 @@ studentApp.get("/:username", async (req, res) => {
 // if its ongoing we will only send the test ongoing message
 // if its previous we will send the results of the test
 studentApp.get("/:username/test/:testId", async (req, res) => {
-  const testId = req.params.testId;
-  const test = await testsCollection.findOne({ testId: testId });
-  console.log(test)
-  if (!test) return res.send({ message: "Test not found" });
-  if (test.status === "completed") {
-    return res.send({
-      message: "Test has ended, in frontend redirect to /results/:testId",
-    });
-  } else if (test.status === "ongoing") {
-    return res.send({
-      message: "Test is going on",
-      payload: test,
-    });
-  } else if (test.status === "upcoming") {
-    delete test.codingQuestions;
-    delete test.mcqs;
-    return res.send({
-      message: "Test is upcoming",
-      payload: test,
-    });
-  } else {
-    return res.send({
-      message: "Test not found",
-    });
-  }
+  const { username, testId } = req.params;
+  console.log(username, testId)
+  const test = await testsCollection.findOne({ testId: testId })
+    .then(async (test) => {
+      console.log(test)
+      res.send({
+        message: "Test found",
+        payload: test
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 });
+
 studentApp.get("/:username/test/:testId/c/:qId", async (req, res) => {
   const { username, testId, qId } = req.params;
   const test = await testsCollection.findOne({ testId: testId });
@@ -115,10 +106,24 @@ studentApp.get("/:username/test/:testId/m/:qId", async (req, res) => {
   }
 });
 
+//final submission
+studentApp.post("/:username/test/:testId/submit", async (req, res) => {
+  const { username, testId } = req.params;
+  const email = username + "@gmail.com";
+  const scoreUser = {
+    ...req.body,
+    email: email,
+  }
+  await resultsCollection.updateOne({ testId: testId }, { $push: { results: scoreUser } });
+  await studentsCollection.updateOne({ email: email }, { $push: { testsTaken: { test: testId,score:{...req.body} } } });
+
+  return res.send({ message: "Answers are submitted, please leave" });
+})
+
 studentApp.post("/:username/test/:testId/c/:qId/run", async (req, res) => {
   const { username, testId, qId } = req.params;
 
-  const { code, customInput } = req.body;
+  const { code, customInput, language } = req.body;
   const test = await testsCollection.findOne({ testId: testId });
   const lang = test.language;
   const langOpt = [
@@ -127,7 +132,6 @@ studentApp.post("/:username/test/:testId/c/:qId/run", async (req, res) => {
     { value: "Java", label: "Java", id: 62 },
   ];
   const langId = langOpt.find((l) => l.value === lang).id;
-
   const options = {
     method: "POST",
     url: "https://judge0-ce.p.rapidapi.com/submissions",
@@ -138,7 +142,7 @@ studentApp.post("/:username/test/:testId/c/:qId/run", async (req, res) => {
     headers: {
       "content-type": "application/json",
       "Content-Type": "application/json",
-      "X-RapidAPI-Host": process.env.JUDGE0_RAPID_API_HOST,
+      "X-RapidAPI-Host": process.env. JUDGE0_RAPID_API_HOST,
       "X-RapidAPI-Key": process.env.JUDGE0_RAPID_API_KEY,
     },
     data: {
@@ -162,9 +166,21 @@ studentApp.post("/:username/test/:testId/c/:qId/run", async (req, res) => {
     return res.send({ message: "Internal Server Error" });
   }
 });
+
 studentApp.post("/:username/test/:testId/c/:qId/submit", async (req, res) => {
-  const { lang, code, problemId } = req.body;
-  const problem = problems.find(p => p.problemId === problemId);
+  const { username, testId, qId } = req.params;
+
+  const { code, customInput, language,problem } = req.body;
+  const test = await testsCollection.findOne({ testId: testId });
+  const lang = test.language;
+  const langOpt = [
+    { value: "C++", label: "C++", id: 54 },
+    { value: "javascript", label: "javascript", id: 63 },
+    { value: "Java", label: "Java", id: 62 },
+  ];
+  const langId = langOpt.find((l) => l.value === lang).id;
+  console.log("problem",problem)
+  console.log(problem.testInput, problem.testOutput);
   const options = {
     method: 'POST',
     url: 'https://judge0-ce.p.rapidapi.com/submissions',
@@ -179,7 +195,7 @@ studentApp.post("/:username/test/:testId/c/:qId/submit", async (req, res) => {
       "X-RapidAPI-Key": process.env.JUDGE0_RAPID_API_KEY,
     },
     data: {
-      language_id: lang,
+      language_id: langId,
       source_code: btoa(code),
       stdin: btoa(problem.testInput),
       expected_output: btoa(problem.testOutput),
@@ -193,8 +209,8 @@ studentApp.post("/:username/test/:testId/c/:qId/submit", async (req, res) => {
 
     setTimeout(async () => {
       const result = await checkStatus(token)
-      console.log(result)
-      res.send(result)
+      console.log("result-api output ",result)
+      res.send({ message: "add the result to user-answer thingy", result: result })
     }, 5000)
 
 
@@ -203,12 +219,13 @@ studentApp.post("/:username/test/:testId/c/:qId/submit", async (req, res) => {
     return res.send({ message: "Internal Server Error" });
   }
 });
+
 studentApp.get("/:username/results", async (req, res) => {
   const username = req.params.username;
   const email = username + "@gmail.com";
   const student = await studentsCollection.findOne({ email: email });
   if (!student) return res.send({ message: "Student not found" });
-  const results = student.testsInfo;
+  const results = student.testsTaken;
   return res.send({
     message: "All results of student",
     payload: results,
@@ -234,4 +251,16 @@ studentApp.get("/:username/results/:testId", async (req, res) => {
   }
 });
 
+studentApp.get("/:username/test/:testId/cheater",async(req,res)=>{
+  const {username,testId} = req.params;
+  const email = username + "@gmail.com";
+  const student = await studentsCollection.findOne({email:email});
+  if(!student) return res.send({message:"Student not found"});
+  
+  await testsCollection.updateOne({testId:testId},{$push:{cheaters:email}})
+  .then((response)=>{
+    console.log(response)
+    return res.send({message:"Cheater added to the list"})
+  })
+})
 module.exports = studentApp;

@@ -22,7 +22,7 @@ const CreateTest: React.FC = () => {
       numMcqs,
       codingQuestions: [],
       mcqs: [],
-      status: false //private
+      status: "upcoming" //private
     };
 
     // console.log(testDetails);
@@ -47,7 +47,8 @@ const CreateTest: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(handleCreateTest)} className='h-full w-full p-8 flex flex-col pt-10 gap-8'>
       <h1 className='text-4xl'>Create Test</h1>
-
+      <p className='text-lg italic text-gray-700'>Host Your Own Lab Session on CodeWatch!
+        Enhance the learning experience with interactive coding labs tailored to your curriculum. Faculty members can now organize engaging lab sessions for their students. </p>
       <div className='flex flex-row gap-16 justify-start items-center'>
         <h1>Test name :</h1>
         <input
@@ -88,7 +89,7 @@ const CreateTest: React.FC = () => {
         />
       </div>
 
-      
+
 
       <div className='flex flex-row gap-16 items-center justify-start'>
         <h1>Specific language</h1>
@@ -105,7 +106,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1>Number of coding questions</h1>
+        <h1>Number of Coding Questions</h1>
         <input
           type="number"
           required
@@ -115,7 +116,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1>Number of mcqs</h1>
+        <h1>Number of MCQ's</h1>
         <input
           type="number"
           required
@@ -124,7 +125,7 @@ const CreateTest: React.FC = () => {
         />
       </div>
 
-      <button type='submit' className='w-1/4 mt-4 bg-blue-700 px-6 py-2 rounded-lg text-white'>
+      <button type='submit' className='w-1/4 mt-4 bg-black px-6 py-2 border rounded-lg text-[#f8b739] active:bg-white active:border-black active:text-black'>
         Create Test
       </button>
     </form>

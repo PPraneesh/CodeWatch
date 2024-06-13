@@ -52,7 +52,7 @@ teacherApp.post("/:username/create-test", async (req, res) => {
 
     try {
         const result = await testsCollection.insertOne(test);
-
+        await resultsCollection.insertOne({ testId: testCode, status:"upcoming", results:[], cheater:[]})
         if (result.acknowledged) {
             await teachersCollection.updateOne({ email: username + "@gmail.com" }, { $push: { testsCreated: testCode } });
             return res.send({
@@ -161,40 +161,29 @@ teacherApp.get("/:username/tests", async (req,res)=>{
 //tests/:testId -- prev, ongoing, upcoming tests
 teacherApp.get("/:username/tests/:testId",async (req,res)=>{
     const {username,testId} = req.params;
-    const test = await testsCollection.findOne({ username:`${username}@gmail.com`,testId: testId });
-    console.log(test)
-    if (!test) {
-        return res.send({
-            message: "Test not found"
-        });
-    }
-    if(test.status === "completed"){
-        const result = await resultsCollection.findOne({ testId: testId });
-        return res.send({
-            message: "Test has ended",
-            payload: result
-        });
-    }
-    else if(test.status === "ongoing"){
-        const result = await resultsCollection.findOne({ testId: testId });
-        return res.send({
-            message: "Test is going on",
-            payload: result
-        });
-    }
-    else if(test.status === "upcoming"){
-        
-        return res.send({
-            message: "Test is upcoming",
+    const test = await testsCollection.findOne({testId: testId })
+    .then(async (test)=>{
+        res.send({
+            message: "Test found",
             payload: test
-        });
-    }
-    else{
-        return res.send({
-            message: "Test not found"
-        });
-    }
+        })
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
 })
 
+teacherApp.get("/:username/tests/:testId/results", async (req, res) => {
+    const { username, testId } = req.params;
+    const results = await resultsCollection.findOne({ testId: testId });
+    if (!results) return res.send({ message: "Results not found" });
+    if(results.status==="upcoming")
+    return res.send({ message: "Test not completed" });
+    
+    return res.send({
+        message: "Results found",
+        payload: results,
+    });
+})
 
 module.exports = teacherApp;

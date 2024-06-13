@@ -11,6 +11,7 @@ import TestCodeInput from './pages/TestCodeInput';
 import Test from './pages/Test';
 import TestResult from './pages/TestResult';
 import AllTests from './pages/AllTests';
+import AllTestsStudent from './pages/AllTestsStudent';
 import Layout from './Layout';
 import { Toaster } from 'react-hot-toast';
 
@@ -63,14 +64,18 @@ const App: React.FC = () => {
           element: <TestCodeInput />
         },
         {
-          path: 'test/:testId',
-          element: <Test />
-        },
-        {
           path: 'test-result/:testId',
           element: <TestResult />
+        },
+        {
+          path:'results',
+          element: <AllTestsStudent />
         }
       ]
+    },
+    {
+      path: "/student/:username/test/:testId",
+      element: <Test />
     },
     {
       path: '*',
