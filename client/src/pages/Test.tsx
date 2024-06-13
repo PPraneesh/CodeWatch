@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CodingInterface from './CodingInterface';
+import Toast from '../components/Toast';
 
 interface MCQ {
   question: string,
@@ -11,6 +12,7 @@ interface MCQ {
 }
 
 const Test: React.FC = () => {
+  const navigate = useNavigate();
   const [testdata, setTestdata] = useState<any>(null);
   const { username, testId } = useParams();
   const [question, setQuestion] = useState<any>({ question: null, type: null });
@@ -66,10 +68,10 @@ const Test: React.FC = () => {
         console.log('hidden');
       }
       else {
-        // axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}/cheater`)
-        // .then(res=>{
-        //     console.log(res.data)
-        // })
+        axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}/cheater`)
+        .then(res=>{
+            console.log(res.data)
+        })
             console.log("heheheh you are busted")
       }
     };
@@ -125,6 +127,8 @@ const Test: React.FC = () => {
     })
     .then(res=>{
       console.log(res.data)
+      Toast.Success('Test Submitted Successfully');
+      navigate(`/student/${username}/results`)
     })
   }
 

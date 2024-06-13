@@ -23,7 +23,6 @@ const TestCodeInput: React.FC = () => {
     const [test, setTest] = useState<Test>();
     const [res, setRes] = useState<any>(true)
     const { username, testId } = useParams()
-
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -74,7 +73,7 @@ const TestCodeInput: React.FC = () => {
                 <div className='font-semibold text-xl'>{test?.testName}</div>
                 <hr />
                 <div>
-                    {test?.status === 'completed' && <Link to={`/student/${username}/test/${testId}/result`}>Show result</Link>}
+                    {test?.status === 'completed' && <Link to={`/student/${username}/test/${testCode}/result`}>Show result</Link>}
                     {test?.status === 'upcoming' && <h2>Wait, Test is about to start</h2>}
                     {test?.status === 'ongoing' && <button className='bg-green-600 px-4 py-2 text-white' onClick={() => navigate(`/student/${username}/test/${testCode}`)}>Start</button>}
                 </div>
