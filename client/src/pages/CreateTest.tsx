@@ -22,19 +22,19 @@ const CreateTest: React.FC = () => {
       numMcqs,
       codingQuestions: [],
       mcqs: [],
-      status: false //private
+      status: "upcoming" //private
     };
 
     // console.log(testDetails);
-    await axios.post(`http://localhost:3001/teacher/${username}/create-test`, testDetails)
+    await axios.post(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/teacher/${username}/create-test`, testDetails)
       .then((res) => {
         console.log(res.data)
-        if(res.data.message === 'Test created'){
+        if (res.data.message === 'Test created') {
           Toast.Success("Test created successfully")
           console.log(res.data.payload)
           navigate(`/teacher/${username}/create-test/${res.data.payload.testId}/add-questions`)
         }
-        else if(res.data.message === 'Test not created'){
+        else if (res.data.message === 'Test not created') {
           Toast.Error("Error creating test")
         }
       })
@@ -45,41 +45,58 @@ const CreateTest: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleCreateTest)} className='h-full w-full p-8'>
-      <h1 className='text-4xl '>Create Test</h1>
-      <div>
-        <h1>Test name</h1>
+    <form onSubmit={handleSubmit(handleCreateTest)} className='h-full w-full p-8 flex flex-col pt-10 gap-8'>
+      <h1 className='text-4xl'>Create Test</h1>
+      <p className='text-lg italic text-gray-700'>Host Your Own Lab Session on CodeWatch!
+        Enhance the learning experience with interactive coding labs tailored to your curriculum. Faculty members can now organize engaging lab sessions for their students. </p>
+      <div className='flex flex-row gap-16 justify-start items-center'>
+        <h1>Test name :</h1>
         <input
           type="text"
-          placeholder='Enter Test Name'
           required
           {...register('testName')}
+          className='border border-black rounded-sm px-2 py-1 w-1/4'
         />
       </div>
 
-      <div>
+      <div className='flex flex-row gap-16 items-center justify-start'>
         <h1>Time of Examination</h1>
         <input
           type="time"
           required
           {...register('examTime')}
+          className='border border-black rounded-sm px-2 py-1'
         />
       </div>
 
-      <div>
+      <div className='flex flex-row gap-16'>
         <h1>Duration of Test in minutes</h1>
         <input
-          type="number"        
+          type="number"
           required
           {...register('duration')}
+          className='border border-black rounded-sm px-2 py-1 w-1/4'
         />
       </div>
 
-      <div>
+      <div className='flex flex-row gap-16'>
+        <h1>Date of Test </h1>
+        <input
+          type="date"
+          required
+          {...register('date')}
+          className='border border-black rounded-sm px-2 py-1 w-1/4'
+        />
+      </div>
+
+
+
+      <div className='flex flex-row gap-16 items-center justify-start'>
         <h1>Specific language</h1>
-        <select        
+        <select
           required
           {...register('language')}
+          className='border border-black rounded-sm px-2 py-1 w-1/4'
         >
           <option value="any">Any</option>
           <option value="C++">C++</option>
@@ -88,25 +105,27 @@ const CreateTest: React.FC = () => {
         </select>
       </div>
 
-      <div>
-        <h1>Number of coding questions</h1>
+      <div className='flex flex-row gap-16 items-center justify-start'>
+        <h1>Number of Coding Questions</h1>
         <input
           type="number"
           required
           {...register('numCodingQues')}
+          className='border border-black rounded-sm px-2 py-1 w-1/4'
         />
       </div>
 
-      <div>
-        <h1>Number of mcqs</h1>
+      <div className='flex flex-row gap-16 items-center justify-start'>
+        <h1>Number of MCQ's</h1>
         <input
           type="number"
           required
           {...register('numMcqs')}
+          className='border border-black rounded-sm px-2 py-1 w-1/4'
         />
       </div>
 
-      <button type='submit' className='mt-4 bg-black px-6 py-2 rounded-lg text-white'>
+      <button type='submit' className='w-1/4 mt-4 bg-black px-6 py-2 border rounded-lg text-[#f8b739] active:bg-white active:border-black active:text-black'>
         Create Test
       </button>
     </form>

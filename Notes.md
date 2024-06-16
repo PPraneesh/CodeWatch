@@ -12,7 +12,7 @@ db
 /register
 
 
-
+zvslz
 
 teacher 
 {
@@ -23,13 +23,40 @@ teacher
 }
 
 students
-{
+{   
     name
     email
     hashedpass
     testsInfo : [
         {
-            testId
-        }
+            testId,
+            marks:
+            status: copied notcopied
+        }... 
     ]
-}
+} ...
+
+
+teacher
+results {
+    testId: 
+    status
+    result
+    [
+        {
+            studentId
+            studentMarks
+        } ...
+    ] 
+     
+} ...
+
+
+
+
+///CODING EDITIR
+
+test.tsx and codingInterface.tsx
+
+test.tsx  -  qId
+
