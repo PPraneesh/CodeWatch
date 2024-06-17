@@ -2,7 +2,6 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import PerformanceChart from '../components/PerformanceChart';
-import CanvasJS from '@canvasjs/charts';
 
 
 const TeacherDash: React.FC = () => {
@@ -11,7 +10,7 @@ const TeacherDash: React.FC = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/teacher/${username + "@gmail.com"}`)
+    axios.get(`/api/teacher/${username + "@gmail.com"}`)
       .then(res => {
         if (res.data.message === "Teacher not found")
           return

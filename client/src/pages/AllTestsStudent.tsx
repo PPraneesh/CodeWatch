@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useEffect,useState} from 'react'
 import { useParams } from 'react-router-dom'
-const AllTestsStudent = () => {
+
+const AllTestsStudent: React.FC = () => {
     const { username } = useParams<{ username: string }>();
     const [tests, setTests] = useState<any[]>([]);
     useEffect(()=>{
-        axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/results`)
+        axios.get(`/api/student/${username}/results`)
         .then(res=>{
             setTests(res.data.payload)
             console.log(res.data.payload)
@@ -17,7 +18,7 @@ const AllTestsStudent = () => {
       {
         tests.map((test: any) => {
           return (
-            <div key={test?.test} className="border border-gray-300 p-4 rounded-lg my-4 bg-gray-800 text-white shadow-md shadow-[#f8b739] border-[#f8b739]
+            <div key={test?.test} className="border p-4 rounded-lg my-4 bg-gray-800 text-white shadow-md shadow-[#f8b739] border-[#f8b739]
              ">
                 <h2 className="text-2.xl">{test?.testName}</h2>
                 <p className="text-sm"><span className='font-bold text-1.5xl'>Test ID:</span>  {test.test}</p>

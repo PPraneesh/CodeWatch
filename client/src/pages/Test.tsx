@@ -21,6 +21,7 @@ const Test: React.FC = () => {
   const [mcqs, setMcqs] = useState<MCQ | null>(null);
   const [codingData, setCodingData] = useState<any>([]);
 
+  console.log(codingData)
   
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const Test: React.FC = () => {
   }, [testdata]);
 
   const fetchFirst = () => {
-    axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}`)
+    axios.get(`/api/student/${username}/test/${testId}`)
       .then(res => {
         if (res.data.message === 'Test not found')
           return console.log('test not found');
@@ -68,7 +69,7 @@ const Test: React.FC = () => {
         console.log('hidden');
       }
       else {
-        axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}/cheater`)
+        axios.get(`/api/student/${username}/test/${testId}/cheater`)
         .then(res=>{
             console.log(res.data)
         })
@@ -81,7 +82,7 @@ const Test: React.FC = () => {
 
   useEffect(() => {
     if (question?.type === 'mcq') {
-      axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}/m/${question?.question}`)
+      axios.get(`/api/student/${username}/test/${testId}/m/${question?.question}`)
         .then(res => {
           if (res.data.message === 'Question found')
             setMcqs(res.data.payload);
@@ -121,7 +122,7 @@ const Test: React.FC = () => {
     mcqStats.forEach((stat) => {
       if(stat) mcqScore+=2;
     });
-    await axios.post(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}/submit`,{
+    await axios.post(`/api/student/${username}/test/${testId}/submit`,{
       codingScore : codingScore,
       mcqScore: mcqScore
     })

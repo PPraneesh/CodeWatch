@@ -3,16 +3,16 @@ import { useParams } from 'react-router-dom';
 import Editor from "@monaco-editor/react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import axios from 'axios';
+
 interface InterfaceProps {
   qId: string,
   language: string,
   setCodingData: any
 }
 
+
 const CodingInterface: React.FC<InterfaceProps> = ({ qId, language, setCodingData }) => {
   const { username, testId } = useParams() 
-
-
 
   const getOutput = (outputDetails: any) => {
     let statusId = outputDetails?.status?.id;
@@ -77,7 +77,7 @@ const CodingInterface: React.FC<InterfaceProps> = ({ qId, language, setCodingDat
 
   useEffect(() => {
 
-    axios.get(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}/c/${qId}`)
+    axios.get(`/api/student/${username}/test/${testId}/c/${qId}`)
       .then(res => {
         setProblem(res.data.payload)
         setInput(res.data.payload.input)
@@ -99,7 +99,7 @@ const CodingInterface: React.FC<InterfaceProps> = ({ qId, language, setCodingDat
       setProcessing(true);
       setRunOrSubmit("run");
       axios
-        .post(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}/c/${qId}/run`, {
+        .post(`/api/student/${username}/test/${testId}/c/${qId}/run`, {
           code: code,
           customInput: input,
           problem: problem
@@ -122,7 +122,7 @@ const CodingInterface: React.FC<InterfaceProps> = ({ qId, language, setCodingDat
         setRunOrSubmit("submit");
 
       axios
-        .post(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testId}/c/${qId}/submit`, {
+        .post(`/api/student/${username}/test/${testId}/c/${qId}/submit`, {
           code: code,
           customInput: input,
           problem: problem,
@@ -196,7 +196,7 @@ const CodingInterface: React.FC<InterfaceProps> = ({ qId, language, setCodingDat
                   <Panel defaultSize={50} className="input-pane">
                     <div className="inputPane whitespace-pre">
                       <h2>Input</h2>
-                      <textarea rows={7} onChange={handleInput} className='text-black p-2 whitespace-pre' value={problem?.input} />
+                      <textarea rows={7} onChange={handleInput} className='text-black p-2 whitespace-pre' value={String(problem?.input)} />
                     </div>
                   </Panel>
                   <hr />

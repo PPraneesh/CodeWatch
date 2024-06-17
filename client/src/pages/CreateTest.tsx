@@ -26,7 +26,7 @@ const CreateTest: React.FC = () => {
     };
 
     // console.log(testDetails);
-    await axios.post(`https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/teacher/${username}/create-test`, testDetails)
+    await axios.post(`/api/teacher/${username}/create-test`, testDetails)
       .then((res) => {
         console.log(res.data)
         if (res.data.message === 'Test created') {

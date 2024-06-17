@@ -41,7 +41,7 @@ const Login: React.FC = () => {
 
 
   const handleFormSubmit: SubmitHandler<FormData> = async (data) => {
-    const url = `https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/${login ? "login" : "register"}`;
+    const url = login ? "/api/login" : "/api/register";
 
     try {
       const res = await axios.post(url, { ...data, userType });
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className='w-full min-h-screen flex flex-row '>
+    <div className='w-full min-h-screen flex flex-row bg-gray-200'>
       <div className="relative w-7/12">
         <video
           autoPlay
@@ -114,7 +114,7 @@ const Login: React.FC = () => {
             </div>
           )}
           <div>
-            <label className="block text-white text-lg font-bold mb-2 text-gray-200">Email Address</label>
+            <label className="block text-white text-lg font-bold mb-2 ">Email Address</label>
             <input
               type="email"
               className='w-full px-3 py-2  border-2 border-black/40 focus:border-[#f8b739] focus:border-2 focus:outline-none rounded-lg bg-gray-800 text-white'
@@ -124,10 +124,10 @@ const Login: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-white text-lg font-bold mb-2 text-gray-200 ">Password</label>
+            <label className="block text-white text-lg font-bold mb-2  ">Password</label>
             <input
               type="password"
-              className='w-full px-3 py-2 text-black border-2 border-black/40 focus:border-
+              className='w-full px-3 py-2  border-2 border-black/40 focus:border-
                focus:border-[#f8b739] focus:outline-none rounded-lg bg-gray-800 text-white'
               placeholder='Enter password'
               required
@@ -135,7 +135,7 @@ const Login: React.FC = () => {
             />
           </div>
           <div className='w-full'>
-            <label className="block text-white text-lg font-bold mb-2 text-gray-200">User Type</label>
+            <label className="block text-white text-lg font-bold mb-2">User Type</label>
             <div className='flex flex-row gap-4'>
               <div
                 className={`w-1/2 px-4 py-2 rounded-lg text-center cursor-pointer ${userType === 'student' ? 'bg-[#f8b739] ' : 'bg-gray-800 text-white'}`}

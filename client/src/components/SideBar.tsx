@@ -52,28 +52,28 @@ const SideBar: React.FC = () => {
                     user && userType === 'teacher' ?
                         <ul className='flex flex-col gap-4 mt-8 '>
                             <Link to={`/teacher/${username}`}>
-                                <li onClick={() => setSelectedItem("dashboard")} style={{ color: selectedItem === "dashboard" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc] border-b border-[#3f3f3f] border-b-2 pb-2 flex flex-row '> <MdDashboard size={24} /><span className='mx-1 hover:text-[#f8b739]'> Dashboard</span></li>
+                                <li onClick={() => setSelectedItem("dashboard")} style={{ color: selectedItem === "dashboard" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex flex-row '> <MdDashboard size={24} /><span className='mx-1 hover:text-[#f8b739]'> Dashboard</span></li>
                             </Link>
                             <Link to={`/teacher/${username}/create-test`}>
-                                <li onClick={() => setSelectedItem("createTest")} style={{ color: selectedItem === "createTest" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc] border-b border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><IoCreateSharp size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Create Test</span></li>
+                                <li onClick={() => setSelectedItem("createTest")} style={{ color: selectedItem === "createTest" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><IoCreateSharp size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Create Test</span></li>
                             </Link>
                             <Link to={`/teacher/${username}/tests`}>
-                                <li onClick={() => setSelectedItem("tests")} style={{ color: selectedItem === "tests" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc] border-b border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><FaNoteSticky size={24} /><span className='mx-1 hover:text-[#f8b739]'>Tests</span></li>
+                                <li onClick={() => setSelectedItem("tests")} style={{ color: selectedItem === "tests" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><FaNoteSticky size={24} /><span className='mx-1 hover:text-[#f8b739]'>Tests</span></li>
                             </Link>
-                            <li onClick={handleLogout} className='text-lg font-bold cursor-pointer text-[#ffffffcc] border-b border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><RiLogoutBoxFill size={24} /><span className='mx-1 hover:text-[#f8b739]'>Log Out</span></li>
+                            <li onClick={handleLogout} className='text-lg font-bold cursor-pointer text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><RiLogoutBoxFill size={24} /><span className='mx-1 hover:text-[#f8b739]'>Log Out</span></li>
                         </ul>
                         :
                         <ul className='flex flex-col gap-4 mt-8 text-white'>
                             <Link to={`/student/${username}`}>
-                                <li onClick={() => setSelectedItem("dashboard")} style={{ color: selectedItem === "dashboard" ? '#f8b739' : '#ffffffcc' }} className='text-lg border-b border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><MdDashboard size={24} /><span className='mx-1 hover:text-[#f8b739]'> Dashboard</span></li> {/* Add text color here */}
+                                <li onClick={() => setSelectedItem("dashboard")} style={{ color: selectedItem === "dashboard" ? '#f8b739' : '#ffffffcc' }} className='text-lg  border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><MdDashboard size={24} /><span className='mx-1 hover:text-[#f8b739]'> Dashboard</span></li> {/* Add text color here */}
                             </Link>
                             <Link to={`/student/${username}/test`}>
-                                <li onClick={() => setSelectedItem("test")} style={{ color: selectedItem === "test" ? '#f8b739' : '#ffffffcc' }} className='text-lg border-b border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row' ><IoCreateSharp size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Enter Test</span></li> {/* Add text color here */}
+                                <li onClick={() => setSelectedItem("test")} style={{ color: selectedItem === "test" ? '#f8b739' : '#ffffffcc' }} className='text-lg border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row' ><IoCreateSharp size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Enter Test</span></li> {/* Add text color here */}
                             </Link>
                             <Link to={`/student/${username}/results`}>
-                                <li onClick={() => setSelectedItem("result")} style={{ color: selectedItem === "result" ? '#f8b739' : '#ffffffcc' }} className='text-lg border-b border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><FaNoteSticky size={24} /><span className='mx-1 hover:text-[#f8b739]'>Results</span></li> {/* Add text color here */}
+                                <li onClick={() => setSelectedItem("result")} style={{ color: selectedItem === "result" ? '#f8b739' : '#ffffffcc' }} className='text-lg  border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><FaNoteSticky size={24} /><span className='mx-1 hover:text-[#f8b739]'>Results</span></li> {/* Add text color here */}
                             </Link>
-                            <li onClick={handleLogout} className='text-lg cursor-pointer border-b border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><RiLogoutBoxFill size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Log Out</span></li> {/* Add text color here */}
+                            <li onClick={handleLogout} className='text-lg cursor-pointer border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><RiLogoutBoxFill size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Log Out</span></li> {/* Add text color here */}
                         </ul>
                     // <ul className='flex flex-col gap-4 mt-8 text-white'>
                     //     <Link to={`/student/${username}`}>

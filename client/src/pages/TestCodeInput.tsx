@@ -31,7 +31,7 @@ const TestCodeInput: React.FC = () => {
 
     const onSubmit = async (e: any) => {
         e.preventDefault()
-        const url = `https://special-orbit-j6vww6q5qpqhjjq4-5000.app.github.dev/student/${username}/test/${testCode}`
+        const url = `/api/student/${username}/test/${testCode}`
         await axios.get(url)
             .then((res) => {
                 console.log(res.data)
