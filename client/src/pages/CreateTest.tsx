@@ -32,6 +32,13 @@ const CreateTest: React.FC = () => {
         if (res.data.message === 'Test created') {
           Toast.Success("Test created successfully")
           console.log(res.data.payload)
+
+          let payload = localStorage.getItem('payload');
+          let user = JSON.parse(payload || '{}');
+          user.testsCreated.push(res.data.payload.testId);
+          payload = JSON.stringify(user);
+          localStorage.setItem('payload', payload);
+          
           navigate(`/teacher/${username}/create-test/${res.data.payload.testId}/add-questions`)
         }
         else if (res.data.message === 'Test not created') {
@@ -50,7 +57,7 @@ const CreateTest: React.FC = () => {
       <p className='text-lg italic text-gray-700'>Host Your Own Lab Session on CodeWatch!
         Enhance the learning experience with interactive coding labs tailored to your curriculum. Faculty members can now organize engaging lab sessions for their students. </p>
       <div className='flex flex-row gap-16 justify-start items-center'>
-        <h1>Test name :</h1>
+        <h1 className='min-w-56 font-semibold'>Test name :</h1>
         <input
           type="text"
           required
@@ -60,7 +67,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1>Time of Examination</h1>
+        <h1 className='min-w-56 font-semibold'>Time of Examination :</h1>
         <input
           type="time"
           required
@@ -70,7 +77,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16'>
-        <h1>Duration of Test in minutes</h1>
+        <h1 className='min-w-56 font-semibold'>Duration of Test in minutes :</h1>
         <input
           type="number"
           required
@@ -80,7 +87,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16'>
-        <h1>Date of Test </h1>
+        <h1 className='min-w-56 font-semibold'>Date of Test : </h1>
         <input
           type="date"
           required
@@ -92,7 +99,7 @@ const CreateTest: React.FC = () => {
 
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1>Specific language</h1>
+        <h1 className='min-w-56 font-semibold'>Specific language :</h1>
         <select
           required
           {...register('language')}
@@ -106,7 +113,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1>Number of Coding Questions</h1>
+        <h1 className='min-w-56 font-semibold'>Number of Coding Questions :</h1>
         <input
           type="number"
           required
@@ -116,7 +123,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1>Number of MCQ's</h1>
+        <h1 className='min-w-56 font-semibold'>Number of MCQ's :</h1>
         <input
           type="number"
           required

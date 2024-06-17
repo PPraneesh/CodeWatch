@@ -27,7 +27,6 @@ const SideBar: React.FC = () => {
 
     const username = user?.email.split('@')[0];
     const userType = user?.userType;
-    console.log(user)
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('payload');
@@ -38,7 +37,7 @@ const SideBar: React.FC = () => {
     return (
         <div className='h-full w-full p-12 bg-[#000000]'>
             <div className='flex flex-col items-center justify-center gap-4'>
-                <div className='w-32 h-32  flex items-center justify-center bg-[#f8b739] rounded-full'>
+                <div className='w-32 h-32  flex items-center justify-center bg-[#f8b739] uppercase rounded-full'>
                     {<p className='text-6xl text-black'>{user?.email?.split('@')[0][0]}</p>}
                 </div>
                 <div className='text-center text-[#ffffffcc] '>
