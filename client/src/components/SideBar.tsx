@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Toast from './Toast';
 import { MdDashboard } from "react-icons/md";
 import { IoCreateSharp } from "react-icons/io5";
@@ -10,7 +10,8 @@ import { RiLogoutBoxFill } from "react-icons/ri";
 const SideBar: React.FC = () => {
     const [user, setUser] = useState<any>(null);
     const navigate = useNavigate();
-    const [selectedItem, setSelectedItem] = useState("");
+    const path = useLocation()?.pathname;
+    const location = path.split('/').pop();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -51,41 +52,29 @@ const SideBar: React.FC = () => {
                     user && userType === 'teacher' ?
                         <ul className='flex flex-col gap-4 mt-8 '>
                             <Link to={`/teacher/${username}`}>
-                                <li onClick={() => setSelectedItem("dashboard")} style={{ color: selectedItem === "dashboard" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex flex-row '> <MdDashboard size={24} /><span className='mx-1 hover:text-[#f8b739]'> Dashboard</span></li>
+                                <li className={`text-lg font-bold ${location === username ? "text-[#f8b739]" : "text-white"}  border-[#3f3f3f] border-b-2 pb-2 hover:text-[#f8b739] flex flex-row gap-1 `}> <MdDashboard size={24}/> Dashboard</li>
                             </Link>
                             <Link to={`/teacher/${username}/create-test`}>
-                                <li onClick={() => setSelectedItem("createTest")} style={{ color: selectedItem === "createTest" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><IoCreateSharp size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Create Test</span></li>
+                                <li className={`text-lg font-bold ${location === "create-test" ? "text-[#f8b739]" : "text-white"}  border-[#3f3f3f] border-b-2 pb-2 hover:text-[#f8b739] flex flex-row gap-1`}><IoCreateSharp size={24} /> Create Test</li>
                             </Link>
                             <Link to={`/teacher/${username}/tests`}>
-                                <li onClick={() => setSelectedItem("tests")} style={{ color: selectedItem === "tests" ? '#f8b739' : '#ffffffcc' }} className='text-lg font-bold text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><FaNoteSticky size={24} /><span className='mx-1 hover:text-[#f8b739]'>Tests</span></li>
+                                <li className={`text-lg font-bold ${location === "tests" ? "text-[#f8b739]" : "text-white"}  border-[#3f3f3f] border-b-2 pb-2 hover:text-[#f8b739] flex flex-row gap-1`}><FaNoteSticky size={24} />Tests</li>
                             </Link>
-                            <li onClick={handleLogout} className='text-lg font-bold cursor-pointer text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex flex-row'><RiLogoutBoxFill size={24} /><span className='mx-1 hover:text-[#f8b739]'>Log Out</span></li>
+                            <li onClick={handleLogout} className='text-lg font-bold cursor-pointer text-[#ffffffcc]  border-[#3f3f3f] border-b-2 pb-2 flex hover:text-[#f8b739] flex-row gap-1'><RiLogoutBoxFill size={24} />Log Out</li>
                         </ul>
                         :
                         <ul className='flex flex-col gap-4 mt-8 text-white'>
                             <Link to={`/student/${username}`}>
-                                <li onClick={() => setSelectedItem("dashboard")} style={{ color: selectedItem === "dashboard" ? '#f8b739' : '#ffffffcc' }} className='text-lg  border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><MdDashboard size={24} /><span className='mx-1 hover:text-[#f8b739]'> Dashboard</span></li> {/* Add text color here */}
+                                <li className={`text-lg  border-[#3f3f3f] border-b-2 pb-2 ${location === username ? "text-[#f8b739]" : "text-white"} hover:text-[#f8b739] flex flex-row gap-1`}><MdDashboard size={24} /> Dashboard</li> 
                             </Link>
                             <Link to={`/student/${username}/test`}>
-                                <li onClick={() => setSelectedItem("test")} style={{ color: selectedItem === "test" ? '#f8b739' : '#ffffffcc' }} className='text-lg border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row' ><IoCreateSharp size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Enter Test</span></li> {/* Add text color here */}
+                                <li className={`text-lg border-[#3f3f3f] border-b-2 pb-2 ${location === "test" ? "text-[#f8b739]" : "text-white"} hover:text-[#f8b739] flex flex-row gap-1`} ><IoCreateSharp size={24} /> Enter Test</li> 
                             </Link>
                             <Link to={`/student/${username}/results`}>
-                                <li onClick={() => setSelectedItem("result")} style={{ color: selectedItem === "result" ? '#f8b739' : '#ffffffcc' }} className='text-lg  border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><FaNoteSticky size={24} /><span className='mx-1 hover:text-[#f8b739]'>Results</span></li> {/* Add text color here */}
+                                <li className={`text-lg  border-[#3f3f3f] border-b-2 pb-2 ${location === "results" ? "text-[#f8b739]" : "text-white"} hover:text-[#f8b739] flex flex-row gap-1`}><FaNoteSticky size={24} />Results</li> 
                             </Link>
-                            <li onClick={handleLogout} className='text-lg cursor-pointer border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row'><RiLogoutBoxFill size={24} /> <span className='mx-1 hover:text-[#f8b739]'>Log Out</span></li> {/* Add text color here */}
+                            <li onClick={handleLogout} className='text-lg cursor-pointer border-[#3f3f3f] border-b-2 pb-2 text-[#ffffffcc] flex flex-row gap-1'><RiLogoutBoxFill size={24} /> Log Out</li> 
                         </ul>
-                    // <ul className='flex flex-col gap-4 mt-8 text-white'>
-                    //     <Link to={`/student/${username}`}>
-                    //         <li className='text-lg font-bold border-b border-[#3f3f3f] border-b-2 pb-2'>Dashboard</li>
-                    //     </Link>
-                    //     <Link to={`/student/${username}/test`}>
-                    //         <li className='text-lg font-bold border-b border-[#3f3f3f] border-b-2 pb-2'>Enter Test</li>
-                    //     </Link>
-                    //     <Link to={`/student/${username}/test-result`}>
-                    //         <li className='text-lg font-bold border-b border-[#3f3f3f] border-b-2 pb-2'>Results</li>
-                    //     </Link>
-                    //     <li onClick={handleLogout} className='text-lg font-bold cursor-pointer'>Log-Out</li>
-                    // </ul>
                 }
             </div>
         </div>

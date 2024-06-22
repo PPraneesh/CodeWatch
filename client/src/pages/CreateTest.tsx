@@ -22,10 +22,9 @@ const CreateTest: React.FC = () => {
       numMcqs,
       codingQuestions: [],
       mcqs: [],
-      status: "upcoming" //private
+      status: "upcoming" 
     };
 
-    // console.log(testDetails);
     await axios.post(`/api/teacher/${username}/create-test`, testDetails)
       .then((res) => {
         console.log(res.data)
@@ -33,6 +32,7 @@ const CreateTest: React.FC = () => {
           Toast.Success("Test created successfully")
           console.log(res.data.payload)
 
+          //adding test to user's testsCreated array in localStorage
           let payload = localStorage.getItem('payload');
           let user = JSON.parse(payload || '{}');
           user.testsCreated.push(res.data.payload.testId);
@@ -47,17 +47,17 @@ const CreateTest: React.FC = () => {
       })
       .catch((err) => {
         console.log(err);
-        Toast.Error('Error creating test, please login again')
+        Toast.Error('Internal Server Error, login again')
       });
   };
 
   return (
-    <form onSubmit={handleSubmit(handleCreateTest)} className='h-full w-full p-8 flex flex-col pt-10 gap-8'>
+    <form onSubmit={handleSubmit(handleCreateTest)} className='h-full w-full flex flex-col gap-8'>
       <h1 className='text-4xl'>Create Test</h1>
       <p className='text-lg italic text-gray-700'>Host Your Own Lab Session on CodeWatch!
         Enhance the learning experience with interactive coding labs tailored to your curriculum. Faculty members can now organize engaging lab sessions for their students. </p>
       <div className='flex flex-row gap-16 justify-start items-center'>
-        <h1 className='min-w-56 font-semibold'>Test name :</h1>
+        <h1 className='min-w-60 font-semibold'>Test name :</h1>
         <input
           type="text"
           required
@@ -67,7 +67,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1 className='min-w-56 font-semibold'>Time of Examination :</h1>
+        <h1 className='min-w-60 font-semibold'>Time of Examination :</h1>
         <input
           type="time"
           required
@@ -77,7 +77,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16'>
-        <h1 className='min-w-56 font-semibold'>Duration of Test in minutes :</h1>
+        <h1 className='min-w-60 font-semibold'>Duration of Test in minutes :</h1>
         <input
           type="number"
           required
@@ -87,7 +87,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16'>
-        <h1 className='min-w-56 font-semibold'>Date of Test : </h1>
+        <h1 className='min-w-60 font-semibold'>Date of Test : </h1>
         <input
           type="date"
           required
@@ -99,7 +99,7 @@ const CreateTest: React.FC = () => {
 
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1 className='min-w-56 font-semibold'>Specific language :</h1>
+        <h1 className='min-w-60 font-semibold'>Specific language :</h1>
         <select
           required
           {...register('language')}
@@ -113,7 +113,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1 className='min-w-56 font-semibold'>Number of Coding Questions :</h1>
+        <h1 className='min-w-60  font-semibold'>Number of Coding Questions :</h1>
         <input
           type="number"
           required
@@ -123,7 +123,7 @@ const CreateTest: React.FC = () => {
       </div>
 
       <div className='flex flex-row gap-16 items-center justify-start'>
-        <h1 className='min-w-56 font-semibold'>Number of MCQ's :</h1>
+        <h1 className='min-w-60  font-semibold'>Number of MCQ's :</h1>
         <input
           type="number"
           required

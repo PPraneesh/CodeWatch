@@ -32,9 +32,7 @@ const PerformanceChart: React.FC = () => {
   }, []);
 
   return (
-    <div>
       <div id="chartContainer" style={{ height: 370, width: '70%', margin:"auto" }}></div>
-    </div>
   );
 };
 

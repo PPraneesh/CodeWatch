@@ -25,8 +25,8 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ qtype, setCodingQuestions
     setMcqPane(false)
   }
   return (
-    <div className='fixed top-20 left-1/3 w-1/2 m-auto bg-gray-500 p-8 rounded-2xl shadow-[5px_5px_20px_0px]'>
-      <span className='absolute top-2 right-6 text-3xl hover:cursor-pointer' onClick={()=>{setMcqPane(false); setCodingPane(false)}}>x</span>
+    <div className='fixed top-20 left-1/3 w-1/2 m-auto bg-black p-8 rounded-2xl shadow-[5px_5px_10px_0px] shadow-[#f8b739]'>
+      <span className='absolute top-2 right-6 text-3xl text-white hover:cursor-pointer' onClick={()=>{setMcqPane(false); setCodingPane(false)}}>x</span>
       {
         qtype ?
           <form onSubmit={handleSubmit(onCSubmit)} className='flex flex-col gap-4 '>
@@ -39,7 +39,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ qtype, setCodingQuestions
             <input type="text" placeholder='Enter Test Input' className='px-4 py-2 rounded-md' required {...register('testInput')} />
             <input type="text" placeholder='Enter Test Output' className='px-4 py-2 rounded-md' required {...register('testOutput')} />
             <input type="text" placeholder='Enter Difficulty' className='px-4 py-2 rounded-md' required {...register('difficulty')} />
-            <button type='submit' className='px-4 py-2 bg-black/80 rounded-md text-white '>Add</button>
+            <button type='submit' className='px-4 py-2 w-32 text-black border bg-white rounded-md active:bg-black active:text-white  '>Add</button>
           </form>
 
           :
@@ -53,7 +53,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ qtype, setCodingQuestions
             <input type="text" placeholder='Enter Option 3' className='px-4 py-2 rounded-md'  required {...register('options.2')} />
             <input type="text" placeholder='Enter Option 4' className='px-4 py-2 rounded-md'  required {...register('options.3')} />
             <input type="text" placeholder='Enter Correct Answer' className='px-4 py-2 rounded-md' required {...register('correctOption')} />
-            <button type='submit' className='px-4 py-2 bg-black/80 rounded-md text-white active:bg-white active:text-black'>Add</button>
+            <button type='submit' className='px-4 py-2 w-32 text-black border bg-white rounded-md active:bg-black active:text-white '>Add</button>
           </form>
       }
     </div>

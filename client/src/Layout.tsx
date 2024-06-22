@@ -14,7 +14,7 @@ const Layout: React.FC = () => {
         <div className="w-[20%] h-full">
           <SideBar />
         </div>
-        <div className="w-[80%] h-full overflow-y-scroll">
+        <div className="w-[80%] h-full overflow-y-scroll p-8 pt-10 mb-10">
           <Outlet />
         </div>
       </div>
